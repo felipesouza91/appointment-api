@@ -11,5 +11,8 @@
   },
   "peerDependencies": {
     "typescript": "^7"
+  },
+  "dependencies": {
+    "fastify": "^5.12.8"
   }
 }
