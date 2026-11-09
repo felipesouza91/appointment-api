@@ -1,18 +1,21 @@
 {
   "name": "appointments-api",
-  "module": "index.ts",
+  "module": "src/app.ts",
   "type": "module",
   "private": true,
   "scripts": {
+    "dev": "bun --watch src/app.ts",
     "typecheck": "bun check"
   },
   "devDependencies": {
+    "@faker-js/faker": "^10.6.0",
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^7"
   },
   "dependencies": {
+    "@fastify/auth": "^5.1.2",
     "fastify": "^5.12.8"
   }
 }
