@@ -1,3 +1,5 @@
+import type { GetAppointmentsUseCase } from "@src/domain/use-cases/get-appointment-use-case";
+import type { Controller } from "@src/http/controllers/get-appointments.controller";
 import "fastify";
 
 declare module "fastify" {
@@ -12,5 +14,12 @@ declare module "fastify" {
     user: {
       id: string;
     };
+  }
+}
+
+declare module "@fastify/awilix" {
+  interface Cradle {
+    getAppointmentsUseCase: GetAppointmentsUseCase;
+    getAppointmentsController: Controller;
   }
 }
