@@ -1,5 +1,5 @@
+import { GetAppointmentsUseCaseImpl } from "@src/domain/use-cases/get-appointment-use-case";
 import type { FastifyInstance, FastifyPluginOptions } from "fastify";
-import { GetAppointmentsUseCaseImpl } from "../../domain/use-cases/get-appointment-use-case";
 import { GetAppoitmentController } from "../controllers/get-appointments.controller";
 
 async function appointmentRoutes(

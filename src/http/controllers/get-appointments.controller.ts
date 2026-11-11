@@ -1,5 +1,5 @@
+import type { GetAppointmentsUseCase } from "@src/domain/use-cases/get-appointment-use-case";
 import type { FastifyReply, FastifyRequest } from "fastify";
-import type { GetAppointmentsUseCase } from "../../domain/use-cases/get-appointment-use-case";
 
 interface Controller {
   execute: (req: FastifyRequest, replay: FastifyReply) => Promise<void>;

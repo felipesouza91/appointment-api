@@ -1,5 +1,5 @@
-import { appointments } from "../../utils/faker";
-import type { Appointment } from "../models/appointment";
+import type { Appointment } from "@src/domain/models/appointment";
+import { appointments } from "@src/utils/faker";
 
 export interface GetAppointmentsUseCase {
   find: (userId: string) => Promise<Appointment[]>;

@@ -1,10 +1,10 @@
 import { faker } from "@faker-js/faker";
+import { users } from "@src/utils/faker";
 import type {
   FastifyReply,
   FastifyRequest,
   HookHandlerDoneFunction,
 } from "fastify";
-import { users } from "../../utils/faker";
 
 export const verifyToken = (
   req: FastifyRequest,
