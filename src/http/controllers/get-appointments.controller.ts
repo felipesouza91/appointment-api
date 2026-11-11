@@ -1,16 +1,16 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import { appointments } from "../../utils/faker";
+import type { GetAppointmentsUseCase } from "../../domain/use-cases/get-appointment-use-case";
 
-export function getAppointmentController(
-  req: FastifyRequest,
-  replay: FastifyReply,
-) {
-  const { id } = req.user;
+interface Controller {
+  execute: (req: FastifyRequest, replay: FastifyReply) => Promise<void>;
+}
 
-  const appointmentsUser = appointments.filter(
-    (appointment) => appointment.userId === id,
-  );
-  console.log("aqui");
-  console.log(appointments);
-  replay.send(appointmentsUser);
+export class GetAppoitmentController implements Controller {
+  constructor(private useCase: GetAppointmentsUseCase) {}
+
+  async execute(req: FastifyRequest, replay: FastifyReply): Promise<void> {
+    const userId = req.user.id;
+    const result = await this.useCase.find(userId);
+    replay.send(result);
+  }
 }

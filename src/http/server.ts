@@ -1,6 +1,6 @@
 import fastifyAuth from "@fastify/auth";
 import Fastify from "fastify";
-import { getAppointmentController } from "./controllers/get-appointments.controller";
+import appointmentRoutes from "./routes/appointment-route";
 import { verifyToken } from "./security/token-verify";
 
 const server = Fastify({
@@ -10,10 +10,6 @@ const server = Fastify({
 await server.register(fastifyAuth);
 server.decorate("verifyToken", verifyToken);
 
-server.get(
-  "/appointments",
-  { preHandler: server.auth([server.verifyToken]) },
-  getAppointmentController,
-);
+server.register(appointmentRoutes);
 
 export { server };

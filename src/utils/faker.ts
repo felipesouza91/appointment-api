@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import type { Appointment } from "../domain/models/appointment";
 
 const users = (function generateUsers() {
   return Array.from({ length: 1 }).map(() => ({
@@ -7,14 +8,17 @@ const users = (function generateUsers() {
   }));
 })();
 
-const appointments = (function generateAppointments() {
-  return Array.from({ length: 5 }).map((item) => ({
-    id: faker.string.uuid(),
-    clientName: faker.person.fullName(),
-    scheduledDate: faker.date.anytime(),
-    userId: faker.helpers.arrayElement(users).id,
-    createdAt: faker.date.anytime(),
-  }));
+const appointments = (function generateAppointments(): Appointment[] {
+  return Array.from({ length: 5 }).map((item) => {
+    return {
+      id: faker.string.uuid(),
+      clientName: faker.person.fullName(),
+      clientPhone: faker.phone.number(),
+      createdAt: faker.date.recent(),
+      scheduledAt: faker.date.recent(),
+      userId: faker.helpers.arrayElement(users).id,
+    };
+  });
 })();
 
 export { appointments, users };

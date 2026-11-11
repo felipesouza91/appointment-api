@@ -9,6 +9,8 @@ declare module "fastify" {
     ) => void;
   }
   interface FastifyRequest {
-    user: any;
+    user: {
+      id: string;
+    };
   }
 }
