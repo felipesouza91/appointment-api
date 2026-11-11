@@ -5,17 +5,30 @@
   "private": true,
   "scripts": {
     "dev": "bun --watch src/app.ts",
+    "build": "bun build src/app.ts",
+    "start": "NODE_ENV=production bun src/app.ts",
+    "test": "bun test",
+    "generate": "drizzle-kit generate:pg",
+    "studio": "drizzle-kit studio",
+    "migrate": "bun ./src/db/migrate.ts",
     "typecheck": "bun check"
-  },
-  "devDependencies": {
-    "@faker-js/faker": "^10.6.0",
-    "@types/bun": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^7"
   },
   "dependencies": {
     "@fastify/auth": "^5.1.2",
-    "fastify": "^5.12.8"
+    "@fastify/type-provider-zod": "^1.0.3",
+    "drizzle-orm": "^1.0.0-rc.5",
+    "fastify": "^5.12.8",
+    "pg": "^8.23.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^10.6.0",
+    "@types/bun": "latest",
+    "@types/pg": "^8.23.1",
+    "drizzle-kit": "^1.0.0-rc.5",
+    "tsx": "^4.23.15"
+  },
+  "peerDependencies": {
+    "typescript": "^7"
   }
 }
