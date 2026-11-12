@@ -8,7 +8,7 @@
     "build": "bun build src/app.ts",
     "start": "NODE_ENV=production bun src/app.ts",
     "test": "bun test",
-    "generate": "drizzle-kit generate:pg",
+    "generate": "drizzle-kit generate",
     "studio": "drizzle-kit studio",
     "migrate": "bun ./src/db/migrate.ts",
     "typecheck": "bun check"
