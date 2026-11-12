@@ -1,18 +1,19 @@
-import type { FastifyInstance, FastifyPluginOptions } from "fastify";
+import type { FastifyPluginOptions } from "fastify";
+import type { FastifyZodType } from "../server";
 
 async function appointmentRoutes(
-  serverInstance: FastifyInstance,
+  serverInstance: FastifyZodType,
   options: FastifyPluginOptions,
 ) {
   serverInstance.get(
     "/appointments",
     { preHandler: serverInstance.auth([serverInstance.verifyToken]) },
-    (req, replay) => {
-      const getAppointmentsController = req.diScope.resolve(
-        "getAppointmentsController",
+    async (req, replay) => {
+      const getAppointmentsUseCase = req.diScope.resolve(
+        "getAppointmentsUseCase",
       );
-
-      return getAppointmentsController.execute(req, replay);
+      const result = await getAppointmentsUseCase.find("1");
+      return replay.send(result);
     },
   );
 }

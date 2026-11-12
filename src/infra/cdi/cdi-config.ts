@@ -1,6 +1,6 @@
 import { diContainer } from "@fastify/awilix";
-import { GetAppointmentsUseCaseImpl } from "@src/domain/use-cases/get-appointment-use-case";
-import { GetAppoitmentController } from "@src/http/controllers/get-appointments.controller";
+import { GetAppointmentsUseCaseImpl } from "@src/domain/use-cases/appointments/get-appointment-use-case";
+
 import { asClass, Lifetime } from "awilix";
 
 export interface ContainerInjection {
@@ -8,10 +8,6 @@ export interface ContainerInjection {
 }
 
 diContainer.register({
-  getAppointmentsController: asClass(GetAppoitmentController, {
-    lifetime: Lifetime.SINGLETON,
-    dispose: (module) => module.dispose(),
-  }),
   getAppointmentsUseCase: asClass(GetAppointmentsUseCaseImpl, {
     lifetime: Lifetime.SINGLETON,
     dispose: (module) => module.dispose(),
