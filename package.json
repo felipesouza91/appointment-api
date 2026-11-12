@@ -10,7 +10,7 @@
     "test": "bun test",
     "generate": "drizzle-kit generate",
     "studio": "drizzle-kit studio",
-    "migrate": "bun ./src/db/migrate.ts",
+    "migrate": "bun ./src/infra/db/migrate.ts",
     "typecheck": "bun check"
   },
   "dependencies": {
