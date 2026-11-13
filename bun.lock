@@ -7,6 +7,7 @@
       "dependencies": {
         "@fastify/auth": "^5.1.2",
         "@fastify/awilix": "^8.3.2",
+        "@fastify/cookie": "^11.1.5",
         "@fastify/swagger": "^9.9.3",
         "@fastify/swagger-ui": "^6.1.3",
         "@fastify/type-provider-zod": "^1.0.3",
@@ -137,6 +138,8 @@
     "@fastify/auth": ["@fastify/auth@5.1.2", "", { "dependencies": { "fastify-plugin": "^6.0.0", "reusify": "^1.0.4" } }, "sha512-5K73YUDIuA2c/m3NJGRoiC7XTyfnpDHMHlUgaA73OFDPZwqxScxEpSlk0bom2XNJ4sbpNt+0fIdEAk8UQFUIzA=="],
 
     "@fastify/awilix": ["@fastify/awilix@8.3.2", "", { "dependencies": { "awilix-manager": "^7.1.0", "fastify-plugin": "^6.0.0" }, "peerDependencies": { "awilix": ">=9.0.0", "fastify": "^5.0.0" } }, "sha512-ANOVy4ax5QYdDbR/p518/HxhOmbyucOC8okwNFl4omzVkBQaNQvZAOtR2HUjacI56v8LlGsqpP1r1tuLiLpa+w=="],
+
+    "@fastify/cookie": ["@fastify/cookie@11.1.5", "", { "dependencies": { "cookie": "^2.0.0", "fastify-plugin": "^6.0.0" } }, "sha512-hs7e0otf7n/lJMpt63EFdQb5/u8kO6DeexEtLPVTybSdItC6SwJ1O0vtTyWvKNR70LZcHLlsUr/y3jFpqtyWRA=="],
 
     "@fastify/deepmerge": ["@fastify/deepmerge@3.2.4", "", {}, "sha512-kc8GQq5gX9RRhw0rov3DMrN8wS8yRlxJRdDzsYwwdBV/wazuVgc/1K7CKL90tlvu3RlHan6Y0R0aE3nJtBz2eQ=="],
 
