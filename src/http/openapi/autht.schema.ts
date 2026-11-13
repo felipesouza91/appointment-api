@@ -1,0 +1,22 @@
+import z from "zod";
+import { registerSchema, signInSchema } from "../validations/inputs/auth-input";
+import { signInResponse } from "../validations/outputs/auth-output";
+
+export const registerOpenApi = {
+  body: registerSchema,
+  description: "Create a user",
+  tags: ["Authenticate"],
+  response: {
+    201: z.undefined().describe("User create with success"),
+  },
+};
+
+export const signInOpenApi = {
+  body: signInSchema,
+  description: "Generate acesso token",
+  tags: ["Authenticate"],
+  response: {
+    200: signInResponse.describe("Acess code token"),
+    400: z.object({ message: z.string() }).describe("Sign in erro merssage"),
+  },
+};

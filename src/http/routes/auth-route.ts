@@ -1,13 +1,6 @@
 import type { FastifyPluginOptions } from "fastify";
-import z from "zod";
+import { registerOpenApi, signInOpenApi } from "../openapi/autht.schema";
 import type { FastifyZodType } from "../server";
-
-const registerSchema = z.object({
-  name: z.string(),
-  email: z.email(),
-  phone: z.string(),
-  password: z.string(),
-});
 
 export async function authRoutes(
   serverInstance: FastifyZodType,
@@ -15,12 +8,28 @@ export async function authRoutes(
 ) {
   serverInstance.post(
     "/auth/register",
-    { ...options, schema: { body: registerSchema } },
+    {
+      ...options,
+      schema: { ...registerOpenApi },
+    },
     async (req, replay) => {
       const createUseUseCase = req.diScope.resolve("createUserUseCase");
       await createUseUseCase.create(req.body);
       console.log("Aqui");
       return replay.status(201).send();
+    },
+  );
+
+  serverInstance.post(
+    "/auth/sign-in",
+    {
+      ...options,
+      schema: { ...signInOpenApi },
+    },
+    async (req, replay) => {
+      const signInUseCase = req.diScope.resolve("signInUseCase");
+      const token = await signInUseCase.execute(req.body);
+      return replay.send(token);
     },
   );
 }

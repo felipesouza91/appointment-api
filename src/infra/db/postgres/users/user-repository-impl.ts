@@ -29,4 +29,9 @@ export class UserRespositoryImpl implements UserRepository {
       .where(or(eq(users.email, email), eq(users.phone, phone)));
     return userExists;
   }
+
+  async findyByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user;
+  }
 }
