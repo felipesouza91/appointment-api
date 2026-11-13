@@ -1,3 +1,4 @@
+import type { Cryptography } from "@src/domain/protocols/cryptography";
 import type { UserRepository } from "@src/domain/repository/users/user-repository";
 import type { GetAppointmentsUseCase } from "@src/domain/use-cases/appointments/get-appointment-use-case";
 import type { CreateUserUseCase } from "@src/domain/use-cases/user/create-user-use-case";
@@ -23,5 +24,6 @@ declare module "@fastify/awilix" {
     getAppointmentsUseCase: GetAppointmentsUseCase;
     createUserUseCase: CreateUserUseCase;
     userRepository: UserRepository;
+    crypto: Cryptography;
   }
 }
