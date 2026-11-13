@@ -1,5 +1,6 @@
 import fastifyAuth from "@fastify/auth";
 import { fastifyAwilixPlugin } from "@fastify/awilix";
+import cookie from "@fastify/cookie";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import {
@@ -25,6 +26,7 @@ import appointmentRoutes from "./routes/appointment-route";
 
 import { authRoutes } from "./routes/auth-route";
 
+import { appEnv } from "@src/infra/config/env";
 import { verifyToken } from "./security/token-verify";
 
 export type FastifyZodType = FastifyInstance<
@@ -55,7 +57,7 @@ await server.register(fastifySwagger, {
   transform: jsonSchemaTransform,
   transformObject: jsonSchemaTransformObject,
 });
-
+server.register(cookie, { secret: appEnv.COOKIE_SECRET });
 await server.register(fastifySwaggerUi, { routePrefix: "/docs" });
 
 await server.register(fastifyAuth);

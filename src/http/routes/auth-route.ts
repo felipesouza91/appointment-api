@@ -1,3 +1,4 @@
+import { appEnv } from "@src/infra/config/env";
 import type { FastifyPluginOptions } from "fastify";
 import { registerOpenApi, signInOpenApi } from "../openapi/autht.schema";
 import type { FastifyZodType } from "../server";
@@ -29,6 +30,10 @@ export async function authRoutes(
     async (req, replay) => {
       const signInUseCase = req.diScope.resolve("signInUseCase");
       const token = await signInUseCase.execute(req.body);
+      replay.setCookie("auth", token.accessToken, {
+        httpOnly: true,
+        maxAge: appEnv.COOKIE_EXPIRATION_TIME,
+      });
       return replay.send(token);
     },
   );
