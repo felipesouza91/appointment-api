@@ -3,6 +3,7 @@ import type {
   FastifyRequest,
   HookHandlerDoneFunction,
 } from "fastify";
+import { TokenError } from "../errors/dto/token-error";
 
 export const verifyToken = (
   req: FastifyRequest,
@@ -15,7 +16,7 @@ export const verifyToken = (
   const requestToken = req.headers.authorization?.substring(7);
 
   if (!requestToken && !tokenCookie) {
-    throw new Error("Token not present");
+    throw new TokenError("Token not present");
   }
 
   const token = requestToken ? requestToken : tokenCookie;
@@ -23,7 +24,7 @@ export const verifyToken = (
   const decodedToken = tokenService.decode(token);
 
   if (!decodedToken) {
-    throw new Error("Token invaid");
+    throw new TokenError("Token invaid");
   }
 
   req.user = decodedToken.id;

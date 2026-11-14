@@ -16,7 +16,6 @@ export async function authRoutes(
     async (req, replay) => {
       const createUseUseCase = req.diScope.resolve("createUserUseCase");
       await createUseUseCase.create(req.body);
-      console.log("Aqui");
       return replay.status(201).send();
     },
   );

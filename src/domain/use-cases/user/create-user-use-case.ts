@@ -1,3 +1,4 @@
+import { InvalidUserPassword } from "@src/domain/errors/invalid-user-password";
 import type { User } from "@src/domain/models/user";
 import type { Cryptography } from "@src/domain/protocols/cryptography";
 import type { UserRepository } from "@src/domain/repository/users/user-repository";
@@ -24,7 +25,7 @@ export class CreateUserUseCase {
       input.phone,
     );
     if (userExists) {
-      throw new Error("Email/phone alread exists");
+      throw new InvalidUserPassword("Email/phone alread exists");
     }
     const encodedPassword = await this.crypto.encrypt(input.password);
     await this.useRepository.create({ ...input, password: encodedPassword });

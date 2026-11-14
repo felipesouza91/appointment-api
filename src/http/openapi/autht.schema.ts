@@ -1,6 +1,7 @@
 import z from "zod";
 import { registerSchema, signInSchema } from "../dto/inputs/auth-input";
 import { signInResponse } from "../dto/outputs/auth-output";
+import { errorResponse } from "../dto/outputs/error-output";
 
 export const registerOpenApi = {
   body: registerSchema,
@@ -17,6 +18,6 @@ export const signInOpenApi = {
   tags: ["Authenticate"],
   response: {
     200: signInResponse.describe("Acess code token"),
-    400: z.object({ message: z.string() }).describe("Sign in erro merssage"),
+    400: errorResponse.describe("Sign in erro merssage"),
   },
 };

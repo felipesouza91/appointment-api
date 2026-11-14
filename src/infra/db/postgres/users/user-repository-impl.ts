@@ -5,33 +5,52 @@ import type {
 } from "@src/domain/repository/users/user-repository";
 import { eq, or } from "drizzle-orm";
 import db from "../../connection";
+import { DbError } from "../../errors/db-erro";
 import { users } from "../../schema";
 
 export class UserRespositoryImpl implements UserRepository {
   async create(input: CreateUserInput): Promise<User> {
-    const [user] = await db
-      .insert(users)
-      .values({ ...input })
-      .returning();
-    if (!user) {
-      throw new Error("Error durring create user");
+    try {
+      const [user] = await db
+        .insert(users)
+        .values({ ...input })
+        .returning();
+      if (!user) {
+        throw new DbError("Error durring create user");
+      }
+      return user;
+    } catch (error) {
+      console.warn(error);
+      throw new DbError("Error durring create user");
     }
-    return user;
   }
 
   async findUserByEmailOrPhone(
     email: string,
     phone: string,
   ): Promise<User | undefined> {
-    const [userExists] = await db
-      .select()
-      .from(users)
-      .where(or(eq(users.email, email), eq(users.phone, phone)));
-    return userExists;
+    try {
+      const [userExists] = await db
+        .select()
+        .from(users)
+        .where(or(eq(users.email, email), eq(users.phone, phone)));
+      return userExists;
+    } catch (error) {
+      console.warn(error);
+      throw new DbError("Error durring create user");
+    }
   }
 
   async findyByEmail(email: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.email, email));
-    return user;
+    try {
+      const [user] = await db
+        .select()
+        .from(users)
+        .where(eq(users.email, email));
+      return user;
+    } catch (error) {
+      console.warn(error);
+      throw new DbError("Error durring create user");
+    }
   }
 }

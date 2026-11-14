@@ -15,17 +15,22 @@ async function appointmentRoutes(
   serverInstance: FastifyZodType,
   options: FastifyPluginOptions,
 ) {
+  serverInstance.addHook(
+    "preHandler",
+    serverInstance.auth([serverInstance.verifyToken]),
+  );
+
   serverInstance.get(
     "/appointments",
     {
       schema: {
         summary: "Get All appointments",
         tags: ["Appointments"],
+        security: [{ bearerAuth: [] }],
         response: {
           200: z.array(appointmentSchema).describe("Response data data"),
         },
       },
-      preHandler: serverInstance.auth([serverInstance.verifyToken]),
     },
     async (req, replay) => {
       const getAppointmentsUseCase = req.diScope.resolve(

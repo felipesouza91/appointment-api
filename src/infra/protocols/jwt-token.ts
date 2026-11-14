@@ -1,4 +1,5 @@
 import type { Token, TokenData } from "@src/domain/protocols/token";
+import { TokenError } from "@src/http/errors/dto/token-error";
 import jwt from "jsonwebtoken";
 import { appEnv } from "../config/env";
 
@@ -17,7 +18,7 @@ export class JwtToken implements Token {
       }
       return result;
     } catch (error) {
-      throw new Error("Token erro validations");
+      throw new TokenError("Token erro validations");
     }
   }
 }

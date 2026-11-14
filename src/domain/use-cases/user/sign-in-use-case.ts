@@ -1,3 +1,4 @@
+import { AuthError } from "@src/domain/errors/auth-error";
 import type { SignInInput, SignInResult } from "@src/domain/models/auth";
 import type { Cryptography } from "@src/domain/protocols/cryptography";
 import type { Token } from "@src/domain/protocols/token";
@@ -22,11 +23,11 @@ export class SignInUseCase {
   async execute({ email, password }: SignInInput): Promise<SignInResult> {
     const user = await this.userRepository.findyByEmail(email);
     if (!user) {
-      throw new Error("Email/password invalid");
+      throw new AuthError("Email/password invalid");
     }
     const passwordCorrect = await this.crypto.compare(password, user.password);
     if (!passwordCorrect) {
-      throw new Error("Email/password invalid");
+      throw new AuthError("Email/password invalid");
     }
     const token = this.token.sing({ id: user.id });
     return {
