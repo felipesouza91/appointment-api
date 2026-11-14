@@ -1,6 +1,6 @@
 import z from "zod";
-import { registerSchema, signInSchema } from "../validations/inputs/auth-input";
-import { signInResponse } from "../validations/outputs/auth-output";
+import { registerSchema, signInSchema } from "../dto/inputs/auth-input";
+import { signInResponse } from "../dto/outputs/auth-output";
 
 export const registerOpenApi = {
   body: registerSchema,
