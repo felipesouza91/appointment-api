@@ -33,6 +33,7 @@ export async function authRoutes(
       replay.setCookie("auth", token.accessToken, {
         httpOnly: true,
         maxAge: appEnv.COOKIE_EXPIRATION_TIME,
+        path: "/",
       });
       return replay.send(token);
     },

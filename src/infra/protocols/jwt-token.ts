@@ -1,4 +1,4 @@
-import type { Token } from "@src/domain/protocols/token";
+import type { Token, TokenData } from "@src/domain/protocols/token";
 import jwt from "jsonwebtoken";
 import { appEnv } from "../config/env";
 
@@ -7,5 +7,17 @@ export class JwtToken implements Token {
     return jwt.sign(body, appEnv.TOKEN_SECRET, {
       expiresIn: appEnv.TOKEN_EXPIRATION_TIME,
     });
+  }
+
+  decode(token: any): TokenData | undefined {
+    try {
+      const result = jwt.verify(token, appEnv.TOKEN_SECRET);
+      if (typeof result === "string") {
+        return undefined;
+      }
+      return result;
+    } catch (error) {
+      throw new Error("Token erro validations");
+    }
   }
 }
