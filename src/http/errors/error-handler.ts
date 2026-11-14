@@ -12,7 +12,6 @@ export async function appErrorHanlder(
   if (error.validation || (error.statusCode && error.statusCode < 500)) {
     return reply.send(error);
   }
-  let statusCode = 400;
 
   if (error instanceof AuthError) {
     return reply.status(400).send({
