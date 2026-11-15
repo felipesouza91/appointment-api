@@ -12,7 +12,6 @@ export async function appErrorHanlder(
   reply: FastifyReply,
 ) {
   if (error.validation || (error.statusCode && error.statusCode < 500)) {
-    console.log(error.validation);
     return reply.send({
       statusCode: error.statusCode,
       title: "Validation Error",

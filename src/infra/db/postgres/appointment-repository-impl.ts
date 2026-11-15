@@ -42,7 +42,6 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
   }
 
   async findByUserId(userId: string): Promise<Appointment[]> {
-    console.log(userId);
     const result = await db
       .select()
       .from(appointments)

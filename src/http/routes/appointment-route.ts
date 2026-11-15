@@ -32,7 +32,6 @@ async function appointmentRoutes(
       schema: { ...createAppointment },
     },
     async (req, replay) => {
-      console.log(req.body.scheduledAt);
       const createAppointmentUseCase = req.diScope.resolve(
         "createAppointmentUseCase",
       );
