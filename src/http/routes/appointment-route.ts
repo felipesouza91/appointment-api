@@ -1,36 +1,21 @@
 import type { FastifyPluginOptions } from "fastify";
-import z from "zod";
+import {
+  createAppointment,
+  getAppointmentsOpenApi,
+} from "../openapi/appointments.schema";
 import type { FastifyZodType } from "../server";
-
-const appointmentSchema = z.object({
-  id: z.string(),
-  scheduledAt: z.date(),
-  createdAt: z.date(),
-  clientName: z.string(),
-  clientPhone: z.string(),
-  userId: z.string(),
-});
 
 async function appointmentRoutes(
   serverInstance: FastifyZodType,
   options: FastifyPluginOptions,
 ) {
-  serverInstance.addHook(
-    "preHandler",
-    serverInstance.auth([serverInstance.verifyToken]),
-  );
-
   serverInstance.get(
     "/appointments",
     {
       schema: {
-        summary: "Get All appointments",
-        tags: ["Appointments"],
-        security: [{ bearerAuth: [] }],
-        response: {
-          200: z.array(appointmentSchema).describe("Response data data"),
-        },
+        ...getAppointmentsOpenApi,
       },
+      preHandler: serverInstance.auth([serverInstance.verifyToken]),
     },
     async (req, replay) => {
       const getAppointmentsUseCase = req.diScope.resolve(
@@ -38,6 +23,29 @@ async function appointmentRoutes(
       );
       const result = await getAppointmentsUseCase.find("1");
       return replay.send(result);
+    },
+  );
+
+  serverInstance.post(
+    "/appointments",
+    {
+      schema: { ...createAppointment },
+    },
+    async (req, replay) => {
+      console.log(req.body.scheduledAt);
+      const createAppointmentUseCase = req.diScope.resolve(
+        "createAppointmentUseCase",
+      );
+      const { id, clientName, clientPhone, createdAt, scheduledAt, userId } =
+        await createAppointmentUseCase.create(req.body);
+      return replay.status(201).send({
+        id,
+        clientName,
+        clientPhone,
+        createdAt,
+        scheduledAt,
+        userId,
+      });
     },
   );
 }

@@ -1,4 +1,6 @@
 import { AuthError } from "@src/domain/errors/auth-error";
+import { BusinessError } from "@src/domain/errors/business-error";
+import { EntityNotFound } from "@src/domain/errors/entity-not-found";
 import { InvalidUserPassword } from "@src/domain/errors/invalid-user-password";
 import dayjs from "dayjs";
 import type { FastifyError, FastifyReply, FastifyRequest } from "fastify";
@@ -10,7 +12,37 @@ export async function appErrorHanlder(
   reply: FastifyReply,
 ) {
   if (error.validation || (error.statusCode && error.statusCode < 500)) {
-    return reply.send(error);
+    console.log(error.validation);
+    return reply.send({
+      statusCode: error.statusCode,
+      title: "Validation Error",
+      detail: "Input data invalid",
+      erros: error.validation?.map((item) => {
+        return {
+          name: item.instancePath.substring(1),
+          detail: item.message!,
+        };
+      }),
+      timestamp: dayjs().toDate().getTime(),
+    });
+  }
+
+  if (error instanceof BusinessError) {
+    return reply.status(400).send({
+      statusCode: 400,
+      title: "Bussines Error",
+      detail: error.message,
+      timestamp: dayjs().toDate().getTime(),
+    });
+  }
+
+  if (error instanceof EntityNotFound) {
+    return reply.status(400).send({
+      statusCode: 400,
+      title: "Entity not found",
+      detail: error.message,
+      timestamp: dayjs().toDate().getTime(),
+    });
   }
 
   if (error instanceof AuthError) {
