@@ -1,4 +1,4 @@
-import { defineRelations } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import { pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 import { users } from "./user";
 
@@ -16,16 +16,11 @@ export const appointments = pgTable("appointments", {
   updatedAt: timestamp("updated_at", { withTimezone: true }),
 });
 
-export const appointmentRelation = defineRelations(
-  { appointments, users },
-  (relation) => {
-    return {
-      appointments: {
-        user: relation.one.users({
-          from: relation.appointments.userId,
-          to: relation.users.id,
-        }),
-      },
-    };
-  },
-);
+export const appointmentRelation = relations(appointments, ({ one }) => {
+  return {
+    user: one(users, {
+      fields: [appointments.userId],
+      references: [users.id],
+    }),
+  };
+});
