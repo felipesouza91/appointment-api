@@ -53,4 +53,14 @@ export class UserRespositoryImpl implements UserRepository {
       throw new DbError("Error durring create user");
     }
   }
+
+  async findById(id: string): Promise<User | undefined> {
+    try {
+      const [user] = await db.select().from(users).where(eq(users.id, id));
+      return user;
+    } catch (error) {
+      console.warn(error);
+      throw new DbError("Error durring create user");
+    }
+  }
 }

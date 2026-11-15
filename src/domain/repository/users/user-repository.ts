@@ -11,4 +11,6 @@ export interface UserRepository {
   ) => Promise<User | undefined>;
 
   findyByEmail(email: string): Promise<User | undefined>;
+
+  findById(id: string): Promise<User | undefined>;
 }
