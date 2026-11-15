@@ -9,7 +9,7 @@ export type CreateAppointmentInput = Omit<
   "id" | "createdAt" | "updatedAt"
 >;
 
-type ç = {
+type CreateAppointmentProps = {
   appointmentRepository: AppointmentRepository;
   userRepository: UserRepository;
 };
@@ -25,7 +25,7 @@ export class CreateAppointmentImpl implements CreateAppointmentUseCase {
   constructor({
     appointmentRepository,
     userRepository,
-  }: CreateAppointmentImpl) {
+  }: CreateAppointmentProps) {
     this.appointmentRepository = appointmentRepository;
     this.userRepository = userRepository;
   }
