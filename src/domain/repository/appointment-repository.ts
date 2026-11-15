@@ -12,4 +12,6 @@ export interface AppointmentRepository {
     date: Date,
     userId: string,
   ): Promise<Appointment | undefined>;
+
+  findByUserId(userId: string): Promise<Appointment[]>;
 }

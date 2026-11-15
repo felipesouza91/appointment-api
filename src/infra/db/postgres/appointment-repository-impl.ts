@@ -24,6 +24,7 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
       throw new DbError("Error durring create appointment", { cause: error });
     }
   }
+
   async findByScheduledAtAndUserId(
     date: Date,
     userId: string,
@@ -38,5 +39,14 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
         ),
       );
     return appointment;
+  }
+
+  async findByUserId(userId: string): Promise<Appointment[]> {
+    console.log(userId);
+    const result = await db
+      .select()
+      .from(appointments)
+      .where(eq(appointments.userId, userId));
+    return result;
   }
 }

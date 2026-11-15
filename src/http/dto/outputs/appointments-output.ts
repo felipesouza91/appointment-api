@@ -6,5 +6,4 @@ export const appointmentResponse = z.object({
   createdAt: z.date(),
   clientName: z.string(),
   clientPhone: z.string(),
-  userId: z.string(),
 });

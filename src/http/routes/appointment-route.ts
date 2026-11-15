@@ -21,7 +21,7 @@ async function appointmentRoutes(
       const getAppointmentsUseCase = req.diScope.resolve(
         "getAppointmentsUseCase",
       );
-      const result = await getAppointmentsUseCase.find("1");
+      const result = await getAppointmentsUseCase.find(req.user);
       return replay.send(result);
     },
   );
@@ -44,7 +44,6 @@ async function appointmentRoutes(
         clientPhone,
         createdAt,
         scheduledAt,
-        userId,
       });
     },
   );
