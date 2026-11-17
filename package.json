@@ -14,6 +14,7 @@
     "typecheck": "bun check"
   },
   "dependencies": {
+    "@date-fns/utc": "^2.1.1",
     "@fastify/auth": "^5.1.2",
     "@fastify/awilix": "^8.3.2",
     "@fastify/cookie": "^11.1.5",
@@ -21,7 +22,7 @@
     "@fastify/swagger-ui": "^6.1.3",
     "@fastify/type-provider-zod": "^1.0.3",
     "awilix": "^13.0.5",
-    "dayjs": "^1.11.23",
+    "date-fns": "^4.4.0",
     "drizzle-orm": "^0.45.4",
     "fastify": "^5.12.8",
     "jsonwebtoken": "^9.0.3",
