@@ -6,6 +6,7 @@ const envSchema = z.object({
   TOKEN_EXPIRATION_TIME: z.coerce.number().min(1),
   COOKIE_SECRET: z.string(),
   COOKIE_EXPIRATION_TIME: z.coerce.number().min(1),
+  PROFILE: z.enum(["DEV", "PROD", "TEST"]).default("DEV"),
 });
 
 export const appEnv = envSchema.parse(process.env);
