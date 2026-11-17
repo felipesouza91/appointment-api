@@ -1,11 +1,15 @@
 import { BusinessError } from "@src/domain/errors/business-error";
-import type { Store } from "@src/domain/models/store";
+import type { Store, StoreDayConfig } from "@src/domain/models/store";
 import type { StoreRepository } from "@src/domain/repository/store-repository";
+
+export type StoreDayConfigInput = Omit<StoreDayConfig, "id">;
 
 export type StoreInput = Omit<
   Store,
-  "id" | "createdAt" | "updatedAt" | "ownerId"
->;
+  "id" | "createdAt" | "updatedAt" | "ownerId" | "configuration"
+> & {
+  configuration: StoreDayConfigInput[];
+};
 
 export interface CreateStoreUseCase {
   create: (data: StoreInput, userId: string) => Promise<Store>;

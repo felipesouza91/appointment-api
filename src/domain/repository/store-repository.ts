@@ -1,6 +1,13 @@
-import type { Store } from "../models/store";
+import type { Store, StoreDayConfig } from "../models/store";
 
-type StoreInput = Omit<Store, "id" | "createdAt" | "updatedAt">;
+type StoreDayConfigInput = Omit<StoreDayConfig, "id">;
+
+type StoreInput = Omit<
+  Store,
+  "id" | "createdAt" | "updatedAt" | "configuration"
+> & {
+  configuration: StoreDayConfigInput[];
+};
 
 export interface StoreRepository {
   create(input: StoreInput): Promise<Store>;

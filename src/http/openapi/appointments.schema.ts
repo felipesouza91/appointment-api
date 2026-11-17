@@ -5,7 +5,7 @@ import {
   createAppointmentResponse,
 } from "../dto/outputs/appointments-output";
 import { errorResponse } from "../dto/outputs/error-output";
-import { globalError } from "./global-error.schema";
+import { authErrors, globalError } from "./global-error.schema";
 
 export const getAppointmentsOpenApi = {
   summary: "Get All appointments",
@@ -13,6 +13,7 @@ export const getAppointmentsOpenApi = {
   security: [{ bearerAuth: [] }],
   response: {
     200: z.array(appointmentResponse).describe("Response data data"),
+    ...authErrors,
     ...globalError,
   },
 };
