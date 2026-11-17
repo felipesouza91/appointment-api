@@ -1,4 +1,5 @@
-import dayjs from "dayjs";
+import { UTCDate } from "@date-fns/utc";
+import { isBefore } from "date-fns";
 import z from "zod";
 
 export const appointmentRequest = z.object({
@@ -6,7 +7,7 @@ export const appointmentRequest = z.object({
   clientPhone: z.string(),
   scheduledAt: z.coerce
     .date()
-    .refine((val) => !dayjs(val).isBefore(dayjs()), {
+    .refine((val) => !isBefore(val, new UTCDate()), {
       error: "Scheduled date don't allow past dates",
     })
     .meta({

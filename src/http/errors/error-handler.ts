@@ -1,8 +1,8 @@
+import { UTCDate } from "@date-fns/utc";
 import { AuthError } from "@src/domain/errors/auth-error";
 import { BusinessError } from "@src/domain/errors/business-error";
 import { EntityNotFound } from "@src/domain/errors/entity-not-found";
 import { InvalidUserPassword } from "@src/domain/errors/invalid-user-password";
-import dayjs from "dayjs";
 import type { FastifyError, FastifyReply, FastifyRequest } from "fastify";
 import { TokenError } from "./dto/token-error";
 
@@ -11,8 +11,9 @@ export async function appErrorHanlder(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
+  request.log.error(error.stack ? error.stack : error);
   if (error.validation || (error.statusCode && error.statusCode < 500)) {
-    return reply.send({
+    return reply.status(400).send({
       statusCode: error.statusCode,
       title: "Validation Error",
       detail: "Input data invalid",
@@ -22,7 +23,7 @@ export async function appErrorHanlder(
           detail: item.message!,
         };
       }),
-      timestamp: dayjs().toDate().getTime(),
+      timestamp: new UTCDate().getTime(),
     });
   }
 
@@ -31,7 +32,7 @@ export async function appErrorHanlder(
       statusCode: 400,
       title: "Bussines Error",
       detail: error.message,
-      timestamp: dayjs().toDate().getTime(),
+      timestamp: new UTCDate().getTime(),
     });
   }
 
@@ -40,7 +41,7 @@ export async function appErrorHanlder(
       statusCode: 400,
       title: "Entity not found",
       detail: error.message,
-      timestamp: dayjs().toDate().getTime(),
+      timestamp: new UTCDate().getTime(),
     });
   }
 
@@ -49,7 +50,7 @@ export async function appErrorHanlder(
       statusCode: 400,
       title: "Authentication Error",
       detail: error.message,
-      timestamp: dayjs().toDate().getTime(),
+      timestamp: new UTCDate().getTime(),
     });
   }
 
@@ -58,7 +59,7 @@ export async function appErrorHanlder(
       statusCode: 400,
       title: "Bussines Error",
       detail: error.message,
-      timestamp: dayjs().toDate().getTime(),
+      timestamp: new UTCDate().getTime(),
     });
   }
 
@@ -67,7 +68,7 @@ export async function appErrorHanlder(
       statusCode: 401,
       title: "Authentication Error",
       detail: error.message,
-      timestamp: dayjs().toDate().getTime(),
+      timestamp: new UTCDate().getTime(),
     });
   }
 
@@ -75,6 +76,6 @@ export async function appErrorHanlder(
     statusCode: 500,
     title: "Internal Server Error",
     detail: error.message,
-    timestamp: dayjs().toDate().getTime(),
+    timestamp: new UTCDate().getTime(),
   });
 }
