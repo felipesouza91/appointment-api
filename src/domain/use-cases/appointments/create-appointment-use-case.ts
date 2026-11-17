@@ -2,16 +2,18 @@ import { BusinessError } from "@src/domain/errors/business-error";
 import { EntityNotFound } from "@src/domain/errors/entity-not-found";
 import type { Appointment } from "@src/domain/models/appointment";
 import type { AppointmentRepository } from "@src/domain/repository/appointment-repository";
-import type { UserRepository } from "@src/domain/repository/users/user-repository";
+import type { StoreRepository } from "@src/domain/repository/store-repository";
 
 export type CreateAppointmentInput = Omit<
   Appointment,
-  "id" | "createdAt" | "updatedAt"
->;
+  "id" | "createdAt" | "updatedAt" | "store"
+> & {
+  storeId: string;
+};
 
 type CreateAppointmentProps = {
   appointmentRepository: AppointmentRepository;
-  userRepository: UserRepository;
+  storeRepository: StoreRepository;
 };
 
 export interface CreateAppointmentUseCase {
@@ -19,26 +21,28 @@ export interface CreateAppointmentUseCase {
 }
 
 export class CreateAppointmentImpl implements CreateAppointmentUseCase {
-  private userRepository: UserRepository;
+  private storeRepository: StoreRepository;
   private appointmentRepository: AppointmentRepository;
 
   constructor({
     appointmentRepository,
-    userRepository,
+    storeRepository,
   }: CreateAppointmentProps) {
     this.appointmentRepository = appointmentRepository;
-    this.userRepository = userRepository;
+    this.storeRepository = storeRepository;
   }
 
   async create(input: CreateAppointmentInput): Promise<Appointment> {
-    const existsUser = await this.userRepository.findById(input.userId);
-    if (!existsUser) {
-      throw new EntityNotFound("User not found");
+    const existsStore = await this.storeRepository.findByIdAndEnabled(
+      input.storeId,
+    );
+    if (!existsStore) {
+      throw new EntityNotFound("Store not found");
     }
     const existsScheduledAt =
-      await this.appointmentRepository.findByScheduledAtAndUserId(
+      await this.appointmentRepository.findByScheduledAtAndStoreId(
         input.scheduledAt,
-        input.userId,
+        input.storeId,
       );
     if (existsScheduledAt) {
       throw new BusinessError("Already exists an appointments for this date");

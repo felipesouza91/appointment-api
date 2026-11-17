@@ -1,6 +1,9 @@
 import z from "zod";
 import { appointmentRequest } from "../dto/inputs/appointment-request";
-import { appointmentResponse } from "../dto/outputs/appointments-output";
+import {
+  appointmentResponse,
+  createAppointmentResponse,
+} from "../dto/outputs/appointments-output";
 import { errorResponse } from "../dto/outputs/error-output";
 import { globalError } from "./global-error.schema";
 
@@ -19,7 +22,7 @@ export const createAppointment = {
   body: appointmentRequest,
   tags: ["Appointments"],
   response: {
-    201: appointmentResponse.describe("Create appointment success"),
+    201: createAppointmentResponse.describe("Create appointment success"),
     400: errorResponse.describe("Validation error"),
     ...globalError,
   },

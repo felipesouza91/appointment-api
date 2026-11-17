@@ -14,5 +14,5 @@ export const appointmentRequest = z.object({
       description: "2026-11-13T23:00:00.000Z",
       example: "2026-11-14T23:00:00.000Z",
     }),
-  userId: z.uuid(),
+  storeId: z.uuid(),
 });

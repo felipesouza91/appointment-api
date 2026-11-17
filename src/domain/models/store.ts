@@ -9,6 +9,7 @@ export enum DayEnum {
 }
 
 export type StoreDayConfig = {
+  id: string;
   day: DayEnum;
   startHour: string;
   endHour: string;
@@ -20,7 +21,7 @@ export type Store = {
   description: string;
   address: string;
   scheduleDuration: number;
-  configuration: StoreDayConfig[];
+  configuration?: StoreDayConfig[];
   ownerId: string;
   createdAt: Date;
   updatedAt: Date | null;

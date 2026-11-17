@@ -2,15 +2,17 @@ import type { Appointment } from "@src/domain/models/appointment";
 
 export type CreateAppointmentInput = Omit<
   Appointment,
-  "id" | "createdAt" | "updatedAt"
->;
+  "id" | "createdAt" | "updatedAt" | "store"
+> & {
+  storeId: string;
+};
 
 export interface AppointmentRepository {
   create(input: CreateAppointmentInput): Promise<Appointment>;
 
-  findByScheduledAtAndUserId(
+  findByScheduledAtAndStoreId(
     date: Date,
-    userId: string,
+    storeId: string,
   ): Promise<Appointment | undefined>;
 
   findByUserId(userId: string): Promise<Appointment[]>;

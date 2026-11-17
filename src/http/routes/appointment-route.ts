@@ -35,7 +35,7 @@ async function appointmentRoutes(
       const createAppointmentUseCase = req.diScope.resolve(
         "createAppointmentUseCase",
       );
-      const { id, clientName, clientPhone, createdAt, scheduledAt, userId } =
+      const { id, clientName, clientPhone, createdAt, scheduledAt } =
         await createAppointmentUseCase.create(req.body);
       return replay.status(201).send({
         id,

@@ -1,15 +1,15 @@
 import { relations } from "drizzle-orm";
 import { pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
-import { users } from "./user";
+import { stores } from "./store";
 
 export const appointments = pgTable("appointments", {
   id: uuid("id").primaryKey().defaultRandom(),
   clientName: varchar("client_name", { length: 200 }).notNull(),
   clientPhone: varchar("client_phone", { length: 150 }).notNull(),
   scheduledAt: timestamp("scheduled_at", { withTimezone: true }).notNull(),
-  userId: uuid("user_id")
+  storeId: uuid("store_id")
     .notNull()
-    .references(() => users.id, { onDelete: "no action" }),
+    .references(() => stores.id, { onDelete: "no action" }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
@@ -18,9 +18,9 @@ export const appointments = pgTable("appointments", {
 
 export const appointmentRelation = relations(appointments, ({ one }) => {
   return {
-    user: one(users, {
-      fields: [appointments.userId],
-      references: [users.id],
+    user: one(stores, {
+      fields: [appointments.storeId],
+      references: [stores.id],
     }),
   };
 });

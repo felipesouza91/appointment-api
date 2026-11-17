@@ -1,4 +1,5 @@
 import type { Appointment } from "@src/domain/models/appointment";
+import type { Store } from "@src/domain/models/store";
 import type {
   AppointmentRepository,
   CreateAppointmentInput,
@@ -6,7 +7,7 @@ import type {
 import { and, eq } from "drizzle-orm";
 import db from "../connection";
 import { DbError } from "../errors/db-erro";
-import { appointments } from "../schema";
+import { appointments, stores } from "../schema";
 
 export class AppointmentRepositoryImpl implements AppointmentRepository {
   async create(input: CreateAppointmentInput): Promise<Appointment> {
@@ -18,34 +19,46 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
       if (!appointment) {
         throw new DbError("Error durring create appointment");
       }
-      return appointment;
+      return { ...appointment, store: { id: input.storeId } as Store };
     } catch (error) {
       console.warn(error);
       throw new DbError("Error durring create appointment", { cause: error });
     }
   }
 
-  async findByScheduledAtAndUserId(
+  async findByScheduledAtAndStoreId(
     date: Date,
-    userId: string,
+    storeId: string,
   ): Promise<Appointment | undefined> {
-    const [appointment] = await db
+    const [result] = await db
       .select()
       .from(appointments)
+      .leftJoin(stores, eq(stores.id, appointments.storeId))
       .where(
         and(
           eq(appointments.scheduledAt, date),
-          eq(appointments.userId, userId),
+          eq(appointments.storeId, storeId),
         ),
       );
-    return appointment;
+    return result
+      ? { ...result?.appointments, store: result.store! }
+      : undefined;
   }
 
   async findByUserId(userId: string): Promise<Appointment[]> {
-    const result = await db
-      .select()
-      .from(appointments)
-      .where(eq(appointments.userId, userId));
-    return result;
+    try {
+      const result = await db
+        .select()
+        .from(appointments)
+        .leftJoin(stores, eq(stores.id, appointments.storeId))
+        .where(eq(stores.ownerId, userId));
+      return result.map((item) => ({
+        ...item.appointments,
+        store: item.store!,
+      }));
+    } catch (error) {
+      console.log(error);
+      throw new DbError("Erro durring find data", { cause: error });
+    }
   }
 }

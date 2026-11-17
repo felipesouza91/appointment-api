@@ -52,4 +52,27 @@ export class StoreRepositoryImpl implements StoreRepository {
       .where(and(eq(stores.name, name), eq(stores.ownerId, userId)));
     return result ? { ...result, configuration: [] } : undefined;
   }
+
+  async findByIdAndEnabled(id: string): Promise<Store | undefined> {
+    const result = await db.query.stores.findFirst({
+      where: (field, { and, eq }) =>
+        and(eq(stores.id, id), eq(stores.enabled, true)),
+      with: {
+        configurations: true,
+      },
+    });
+    return result
+      ? {
+          ...result,
+          configuration: result?.configurations.map(
+            ({ day, endHour, id, startHour }) => ({
+              day,
+              endHour,
+              id,
+              startHour,
+            }),
+          ),
+        }
+      : undefined;
+  }
 }
