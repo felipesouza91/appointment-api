@@ -27,6 +27,7 @@ import { authRoutes } from "./routes/auth-route";
 
 import { appEnv } from "@src/infra/config/env";
 import { appErrorHanlder } from "./errors/error-handler";
+import { storeRoute } from "./routes/store-route";
 import { verifyToken } from "./security/token-verify";
 
 export type FastifyZodType = FastifyInstance<
@@ -73,6 +74,7 @@ server.decorate("verifyToken", verifyToken);
 
 server.register(appointmentRoutes);
 server.register(authRoutes);
+server.register(storeRoute);
 
 server.setErrorHandler(appErrorHanlder);
 

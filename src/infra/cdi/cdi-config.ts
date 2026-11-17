@@ -4,9 +4,11 @@ import { CreateUserUseCase } from "@src/domain/use-cases/user/create-user-use-ca
 import { SignInUseCase } from "@src/domain/use-cases/user/sign-in-use-case";
 
 import { CreateAppointmentImpl } from "@src/domain/use-cases/appointments/create-appointment-use-case";
+import { CreateStoreUseCaseImpl } from "@src/domain/use-cases/store/create-store-use-case";
 import { UserRespositoryImpl } from "@src/infra/db/postgres/users/user-repository-impl";
 import { asClass, Lifetime } from "awilix";
 import { AppointmentRepositoryImpl } from "../db/postgres/appointment-repository-impl";
+import { StoreRepositoryImpl } from "../db/postgres/store-repository-impl";
 import { BunCryptography } from "../protocols/bun-cryptography";
 import { JwtToken } from "../protocols/jwt-token";
 
@@ -19,6 +21,12 @@ diContainer.register({
     lifetime: Lifetime.SINGLETON,
   }),
   appointmentRepository: asClass(AppointmentRepositoryImpl, {
+    lifetime: Lifetime.SINGLETON,
+  }),
+  storeRepository: asClass(StoreRepositoryImpl, {
+    lifetime: Lifetime.SINGLETON,
+  }),
+  createStoreUseCase: asClass(CreateStoreUseCaseImpl, {
     lifetime: Lifetime.SINGLETON,
   }),
   createUserUseCase: asClass(CreateUserUseCase, {
