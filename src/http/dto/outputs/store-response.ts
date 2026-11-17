@@ -1,0 +1,30 @@
+import { DayEnum } from "@src/domain/models/store";
+import z from "zod";
+
+export const storeResumeResponse = z.object({
+  id: z.string(),
+  name: z.string(),
+  description: z.string(),
+  address: z.string(),
+  scheduleDuration: z.number(),
+  createdAt: z.date(),
+  updatedAt: z.date().optional(),
+});
+
+export const storeDayConfigResponse = z.object({
+  id: z.string(),
+  day: z.enum(DayEnum),
+  startHour: z.string(),
+  endHour: z.string(),
+});
+
+export const storeResponse = z.object({
+  id: z.string(),
+  name: z.string(),
+  description: z.string(),
+  address: z.string(),
+  scheduleDuration: z.number(),
+  createdAt: z.date(),
+  updatedAt: z.date().nullable(),
+  configuration: z.array(storeDayConfigResponse).optional(),
+});

@@ -21,7 +21,7 @@ export async function storeRoute(
     async (req, replay) => {
       const createStoreUseCase = req.diScope.resolve("createStoreUseCase");
       const result = await createStoreUseCase.create(req.body, req.user);
-      return replay.status(201).send();
+      return replay.status(201).send(result);
     },
   );
 }
