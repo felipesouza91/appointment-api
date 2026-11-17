@@ -1,6 +1,6 @@
 import type { Store } from "@src/domain/models/store";
 import type { StoreRepository } from "@src/domain/repository/store-repository";
-import { and, eq } from "drizzle-orm";
+import { and, eq, type InferSelectModel } from "drizzle-orm";
 import db from "../connection";
 import { DbError } from "../errors/db-erro";
 import { storeConfigurations } from "../schema";
@@ -16,19 +16,23 @@ export class StoreRepositoryImpl implements StoreRepository {
           throw new DbError("Error durring create user");
         }
 
-        const formatedInput = configuration.map((config) => ({
-          ...config,
-          storeId: store.id,
-        }));
+        let savedConfig: InferSelectModel<typeof storeConfigurations>[] = [];
+        if (configuration) {
+          const formatedInput = configuration.map((config) => ({
+            ...config,
+            storeId: store.id,
+          }));
 
-        const savedConfig = await tx
-          .insert(storeConfigurations)
-          .values(formatedInput)
-          .returning();
+          savedConfig = await tx
+            .insert(storeConfigurations)
+            .values(formatedInput)
+            .returning();
+        }
 
         return {
           ...store,
           configuration: savedConfig.map((item) => ({
+            id: item.id,
             day: item.day,
             startHour: item.startHour,
             endHour: item.endHour,
@@ -61,18 +65,6 @@ export class StoreRepositoryImpl implements StoreRepository {
         configurations: true,
       },
     });
-    return result
-      ? {
-          ...result,
-          configuration: result?.configurations.map(
-            ({ day, endHour, id, startHour }) => ({
-              day,
-              endHour,
-              id,
-              startHour,
-            }),
-          ),
-        }
-      : undefined;
+    return result;
   }
 }
