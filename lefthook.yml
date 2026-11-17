@@ -1,7 +1,7 @@
 pre-commit:
   commands:
     lint-staged:
-      run: bun fmt
+      run: bun fmt {staged_files}
       stage_fixed: true
 # Validate commit messages
 commit-msg:
