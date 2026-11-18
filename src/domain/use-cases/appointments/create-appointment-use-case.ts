@@ -4,7 +4,13 @@ import { EntityNotFound } from "@src/domain/errors/entity-not-found";
 import type { Appointment } from "@src/domain/models/appointment";
 import type { AppointmentRepository } from "@src/domain/repository/appointment-repository";
 import type { StoreRepository } from "@src/domain/repository/store-repository";
-import { format, isAfter, isBefore, isEqual, parse } from "date-fns";
+import {
+  eachMinuteOfInterval,
+  format,
+  isBefore,
+  isEqual,
+  parse,
+} from "date-fns";
 
 export type CreateAppointmentInput = Omit<
   Appointment,
@@ -35,27 +41,41 @@ export class CreateAppointmentImpl implements CreateAppointmentUseCase {
   }
 
   async create(input: CreateAppointmentInput): Promise<Appointment> {
-    const currentDate = new UTCDate();
+    const inputUTC = new UTCDate(input.scheduledAt);
+
+    if (isBefore(inputUTC, new UTCDate())) {
+      throw new BusinessError("Scheduled date don't allow past dates");
+    }
+
     const existsStore = await this.storeRepository.findByIdAndEnabled(
       input.storeId,
     );
+
     if (!existsStore) {
       throw new EntityNotFound("Store not found");
     }
-    const inputUTC = new UTCDate(input.scheduledAt);
+
     const dayOfWeek = format(inputUTC, "EEEE").toUpperCase();
 
-    const exitsConfig = existsStore.configurations?.filter((item) => {
-      const startDate = parse(item.startHour, "HH:mm", currentDate);
-      const endDate = parse(item.endHour, "HH:mm", currentDate);
-      return (
-        item.day.toString() === dayOfWeek &&
-        (isEqual(inputUTC, startDate) || isAfter(inputUTC, startDate)) &&
-        isBefore(inputUTC, endDate)
-      );
-    });
+    const times = existsStore.configurations?.filter(
+      (item) => item.day.toString() === dayOfWeek,
+    );
 
-    if (!exitsConfig || exitsConfig.length === 0) {
+    const exitsConfig = times
+      ?.flatMap((item) => {
+        const startDate = parse(item.startHour, "HH:mm", inputUTC);
+        const endDate = parse(item.endHour, "HH:mm", inputUTC);
+        return eachMinuteOfInterval(
+          { start: startDate, end: endDate },
+          { step: existsStore.scheduleDuration },
+        );
+      })
+      .some((data) => {
+        console.log(data);
+        return isEqual(data, inputUTC);
+      });
+
+    if (!exitsConfig) {
       throw new BusinessError("Scheduled at period is not valid");
     }
 
