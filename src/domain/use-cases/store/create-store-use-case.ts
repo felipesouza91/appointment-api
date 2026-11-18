@@ -6,9 +6,9 @@ export type StoreDayConfigInput = Omit<StoreDayConfig, "id">;
 
 export type StoreInput = Omit<
   Store,
-  "id" | "createdAt" | "updatedAt" | "ownerId" | "configuration"
+  "id" | "createdAt" | "updatedAt" | "ownerId" | "configurations"
 > & {
-  configuration: StoreDayConfigInput[];
+  configurations: StoreDayConfigInput[];
 };
 
 export interface CreateStoreUseCase {

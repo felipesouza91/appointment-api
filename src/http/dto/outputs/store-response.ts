@@ -26,5 +26,5 @@ export const storeResponse = z.object({
   scheduleDuration: z.number(),
   createdAt: z.date(),
   updatedAt: z.date().nullable(),
-  configuration: z.array(storeDayConfigResponse).optional(),
+  configurations: z.array(storeDayConfigResponse).optional(),
 });

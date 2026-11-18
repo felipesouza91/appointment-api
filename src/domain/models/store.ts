@@ -21,7 +21,7 @@ export type Store = {
   description: string;
   address: string;
   scheduleDuration: number;
-  configuration?: StoreDayConfig[];
+  configurations?: StoreDayConfig[];
   ownerId: string;
   createdAt: Date;
   updatedAt: Date | null;

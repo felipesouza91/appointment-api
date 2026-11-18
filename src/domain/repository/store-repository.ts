@@ -4,9 +4,9 @@ type StoreDayConfigInput = Omit<StoreDayConfig, "id">;
 
 export type StoreInputDb = Omit<
   Store,
-  "id" | "createdAt" | "updatedAt" | "configuration"
+  "id" | "createdAt" | "updatedAt" | "configurations"
 > & {
-  configuration: StoreDayConfigInput[];
+  configurations: StoreDayConfigInput[];
 };
 
 export interface StoreRepository {

@@ -11,7 +11,7 @@ import { stores } from "../schema/store";
 
 export class StoreRepositoryImpl implements StoreRepository {
   async create(input: StoreInputDb): Promise<Store> {
-    const { configuration, ...rest } = input;
+    const { configurations, ...rest } = input;
     const result: Store = await db.transaction(async (tx) => {
       try {
         const [store] = await tx.insert(stores).values(rest).returning();
@@ -20,8 +20,8 @@ export class StoreRepositoryImpl implements StoreRepository {
         }
 
         let savedConfig: InferSelectModel<typeof storeConfigurations>[] = [];
-        if (configuration) {
-          const formatedInput = configuration.map((config) => ({
+        if (configurations) {
+          const formatedInput = configurations.map((config) => ({
             ...config,
             storeId: store.id,
           }));
@@ -57,7 +57,7 @@ export class StoreRepositoryImpl implements StoreRepository {
       .select()
       .from(stores)
       .where(and(eq(stores.name, name), eq(stores.ownerId, userId)));
-    return result ? { ...result, configuration: [] } : undefined;
+    return result ? { ...result, configurations: [] } : undefined;
   }
 
   async findByIdAndEnabled(id: string): Promise<Store | undefined> {

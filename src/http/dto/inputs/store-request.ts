@@ -1,27 +1,11 @@
 import { UTCDate } from "@date-fns/utc";
 import { DayEnum } from "@src/domain/models/store";
+import {
+  convertTimeToNumber,
+  validHoursAndMinutes,
+} from "@src/utils/date-util";
 import { addHours, addMinutes, isAfter } from "date-fns";
 import z from "zod";
-
-function convertTimeToNumber(time: string) {
-  return time.split(":").map((value) => {
-    if (value.length === 0) {
-      return null;
-    }
-    return Number(value);
-  });
-}
-
-function validHoursAndMinutes(val: string) {
-  const [hour, minutes] = convertTimeToNumber(val);
-  if ((!hour && hour === null) || !(hour! >= 0 && hour! <= 23)) {
-    return false;
-  }
-  if ((!minutes && minutes === null) || !(minutes! >= 0 && minutes! <= 59)) {
-    return false;
-  }
-  return true;
-}
 
 export const daysConfig = z
   .object({
@@ -58,5 +42,5 @@ export const createStoreRequest = z.object({
   description: z.string(),
   address: z.string(),
   scheduleDuration: z.number(),
-  configuration: z.array(daysConfig),
+  configurations: z.array(daysConfig),
 });
