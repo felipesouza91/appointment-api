@@ -8,7 +8,7 @@ export const storeResumeResponse = z.object({
   address: z.string(),
   scheduleDuration: z.number(),
   createdAt: z.date(),
-  updatedAt: z.date().optional(),
+  updatedAt: z.date().nullable(),
 });
 
 export const storeDayConfigResponse = z.object({

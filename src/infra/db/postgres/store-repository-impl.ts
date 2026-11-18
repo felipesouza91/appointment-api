@@ -1,5 +1,8 @@
 import type { Store } from "@src/domain/models/store";
-import type { StoreRepository } from "@src/domain/repository/store-repository";
+import type {
+  StoreInputDb,
+  StoreRepository,
+} from "@src/domain/repository/store-repository";
 import { and, eq, type InferSelectModel } from "drizzle-orm";
 import db from "../connection";
 import { DbError } from "../errors/db-erro";
@@ -7,7 +10,7 @@ import { storeConfigurations } from "../schema";
 import { stores } from "../schema/store";
 
 export class StoreRepositoryImpl implements StoreRepository {
-  async create(input: Store): Promise<Store> {
+  async create(input: StoreInputDb): Promise<Store> {
     const { configuration, ...rest } = input;
     const result: Store = await db.transaction(async (tx) => {
       try {
@@ -61,6 +64,16 @@ export class StoreRepositoryImpl implements StoreRepository {
     const result = await db.query.stores.findFirst({
       where: (field, { and, eq }) =>
         and(eq(stores.id, id), eq(stores.enabled, true)),
+      with: {
+        configurations: true,
+      },
+    });
+    return result;
+  }
+
+  async findByOwnerId(ownerId: string): Promise<Store[]> {
+    const result = await db.query.stores.findMany({
+      where: (feild, { eq }) => eq(feild.ownerId, ownerId),
       with: {
         configurations: true,
       },
