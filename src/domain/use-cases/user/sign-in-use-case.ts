@@ -2,7 +2,7 @@ import { AuthError } from "@src/domain/errors/auth-error";
 import type { SignInInput, SignInResult } from "@src/domain/models/auth";
 import type { Cryptography } from "@src/domain/protocols/cryptography";
 import type { Token } from "@src/domain/protocols/token";
-import type { UserRepository } from "@src/domain/repository/users/user-repository";
+import type { UserRepository } from "@src/domain/repository/user-repository";
 
 interface SignInUseCaseProps {
   userRepository: UserRepository;

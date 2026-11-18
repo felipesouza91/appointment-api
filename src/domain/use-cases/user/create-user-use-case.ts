@@ -1,7 +1,7 @@
 import { InvalidUserPassword } from "@src/domain/errors/invalid-user-password";
 import type { User } from "@src/domain/models/user";
 import type { Cryptography } from "@src/domain/protocols/cryptography";
-import type { UserRepository } from "@src/domain/repository/users/user-repository";
+import type { UserRepository } from "@src/domain/repository/user-repository";
 
 interface CreateUserUseCaseProps {
   userRepository: UserRepository;

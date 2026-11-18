@@ -2,11 +2,11 @@ import type { User } from "@src/domain/models/user";
 import type {
   CreateUserInput,
   UserRepository,
-} from "@src/domain/repository/users/user-repository";
+} from "@src/domain/repository/user-repository";
 import { eq, or } from "drizzle-orm";
-import db from "../../connection";
-import { DbError } from "../../errors/db-erro";
-import { users } from "../../schema";
+import db from "../connection";
+import { DbError } from "../errors/db-erro";
+import { users } from "../schema";
 
 export class UserRespositoryImpl implements UserRepository {
   async create(input: CreateUserInput): Promise<User> {

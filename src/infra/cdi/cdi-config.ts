@@ -6,7 +6,7 @@ import { SignInUseCase } from "@src/domain/use-cases/user/sign-in-use-case";
 import { CreateAppointmentImpl } from "@src/domain/use-cases/appointments/create-appointment-use-case";
 import { CreateStoreUseCaseImpl } from "@src/domain/use-cases/store/create-store-use-case";
 import { GetStoreUseCaseImpl } from "@src/domain/use-cases/store/get-store-use-case";
-import { UserRespositoryImpl } from "@src/infra/db/postgres/users/user-repository-impl";
+import { UserRespositoryImpl } from "@src/infra/db/postgres/user-repository-impl";
 import { asClass, Lifetime } from "awilix";
 import { AppointmentRepositoryImpl } from "../db/postgres/appointment-repository-impl";
 import { StoreRepositoryImpl } from "../db/postgres/store-repository-impl";
