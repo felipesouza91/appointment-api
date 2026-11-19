@@ -28,3 +28,8 @@ export const storeResponse = z.object({
   updatedAt: z.date().nullable(),
   configurations: z.array(storeDayConfigResponse).optional(),
 });
+
+export const storePeriod = z.object({
+  date: z.date(),
+  available: z.boolean(),
+});

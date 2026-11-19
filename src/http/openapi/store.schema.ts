@@ -2,6 +2,7 @@ import z from "zod";
 import { createStoreRequest } from "../dto/inputs/store-request";
 import { errorResponse } from "../dto/outputs/error-output";
 import {
+  storePeriod,
   storeResponse,
   storeResumeResponse,
 } from "../dto/outputs/store-response";
@@ -27,6 +28,23 @@ export const getStoreOpenApi = {
   tags: ["Store"],
   response: {
     200: z.array(storeResumeResponse).describe("Create a store"),
+    ...authErrors,
+    ...globalError,
+  },
+};
+
+export const getStoreByIdPeriodsOpenApi = {
+  params: z.object({
+    storeId: z.uuid(),
+  }),
+  querystring: z.object({
+    date: z.coerce.date(),
+  }),
+  summary: "Get store periods",
+  description: "Get store periods",
+  tags: ["Store"],
+  response: {
+    200: z.array(storePeriod).describe("Store appointments periods"),
     ...authErrors,
     ...globalError,
   },

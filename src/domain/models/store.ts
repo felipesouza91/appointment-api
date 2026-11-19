@@ -8,6 +8,11 @@ export enum DayEnum {
   SATURDAY = "SATURDAY",
 }
 
+export type StorePeriod = {
+  date: Date;
+  available: boolean;
+};
+
 export type StoreDayConfig = {
   id: string;
   day: DayEnum;

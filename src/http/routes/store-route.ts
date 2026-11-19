@@ -1,22 +1,22 @@
 import type { FastifyPluginOptions } from "fastify";
-import { createStoreOpenApi, getStoreOpenApi } from "../openapi/store.schema";
+import {
+  createStoreOpenApi,
+  getStoreByIdPeriodsOpenApi,
+  getStoreOpenApi,
+} from "../openapi/store.schema";
 import type { FastifyZodType } from "../server";
 
 export async function storeRoute(
   serverInstance: FastifyZodType,
   options: FastifyPluginOptions,
 ) {
-  serverInstance.addHook(
-    "preHandler",
-    serverInstance.auth([serverInstance.verifyToken]),
-  );
-
   serverInstance.post(
     "/store",
     {
       schema: {
         ...createStoreOpenApi,
       },
+      preHandler: serverInstance.auth([serverInstance.verifyToken]),
     },
     async (req, replay) => {
       const createStoreUseCase = req.diScope.resolve("createStoreUseCase");
@@ -31,6 +31,7 @@ export async function storeRoute(
       schema: {
         ...getStoreOpenApi,
       },
+      preHandler: serverInstance.auth([serverInstance.verifyToken]),
     },
     async (req, replay) => {
       const getStoreUseCase = req.diScope.resolve("getStoreUseCase");
@@ -45,6 +46,24 @@ export async function storeRoute(
         updatedAt: data.updatedAt,
       }));
       return replay.status(200).send(formated);
+    },
+  );
+
+  serverInstance.get(
+    "/store/:storeId/periods",
+    {
+      schema: {
+        ...getStoreByIdPeriodsOpenApi,
+      },
+      preHandler: serverInstance.auth([serverInstance.verifyToken]),
+    },
+    async (req, replay) => {
+      const getStorePeriodById = req.diScope.resolve("getStorePeriodById");
+      const result = await getStorePeriodById.find(
+        req.params.storeId,
+        req.query.date,
+      );
+      return replay.status(200).send(result);
     },
   );
 }

@@ -4,7 +4,8 @@ import type {
   AppointmentRepository,
   CreateAppointmentInput,
 } from "@src/domain/repository/appointment-repository";
-import { and, eq } from "drizzle-orm";
+import { endOfDay, startOfDay } from "date-fns";
+import { and, between, eq } from "drizzle-orm";
 import db from "../connection";
 import { DbError } from "../errors/db-erro";
 import { appointments, stores } from "../schema";
@@ -60,5 +61,24 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
       console.log(error);
       throw new DbError("Erro durring find data", { cause: error });
     }
+  }
+
+  async findByStoreIdAndDate(
+    storeId: string,
+    date: Date,
+  ): Promise<Appointment[]> {
+    const result = await db
+      .select()
+      .from(appointments)
+      .where(
+        and(
+          eq(appointments.storeId, storeId),
+          between(appointments.scheduledAt, startOfDay(date), endOfDay(date)),
+        ),
+      );
+    return result.map(({ storeId, ...data }) => ({
+      ...data,
+      store: { id: storeId } as Store,
+    }));
   }
 }
