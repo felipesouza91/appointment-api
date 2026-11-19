@@ -18,7 +18,7 @@ export const appointments = pgTable("appointments", {
 
 export const appointmentRelation = relations(appointments, ({ one }) => {
   return {
-    user: one(stores, {
+    store: one(stores, {
       fields: [appointments.storeId],
       references: [stores.id],
     }),
