@@ -1,3 +1,4 @@
+import { UTCDate } from "@date-fns/utc";
 import z from "zod";
 import { appointmentRequest } from "../dto/inputs/appointment-request";
 import {
@@ -9,7 +10,17 @@ import { authErrors, globalError } from "./global-error.schema";
 
 export const getAppointmentsOpenApi = {
   summary: "Get All appointments",
+  description:
+    "Get all appointments from a user. Default result is basesd in current day",
   tags: ["Appointments"],
+  querystring: z.object({
+    date: z.coerce
+      .date()
+      .refine((val) => new UTCDate(val))
+      .optional()
+      .default(new UTCDate()),
+    storeId: z.uuid().optional(),
+  }),
   security: [{ bearerAuth: [] }],
   response: {
     200: z.array(appointmentResponse).describe("Response data data"),

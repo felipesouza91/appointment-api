@@ -21,7 +21,11 @@ async function appointmentRoutes(
       const getAppointmentsUseCase = req.diScope.resolve(
         "getAppointmentsUseCase",
       );
-      const result = await getAppointmentsUseCase.find(req.user);
+      const result = await getAppointmentsUseCase.find({
+        userId: req.user,
+        date: req.query.date,
+        storeId: req.query.storeId,
+      });
       return replay.send(result);
     },
   );

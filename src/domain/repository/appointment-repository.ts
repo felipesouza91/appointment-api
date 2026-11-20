@@ -7,6 +7,10 @@ export type CreateAppointmentInput = Omit<
   storeId: string;
 };
 
+export type FindAppointmentWithFilter = {
+  [filterName: string]: any;
+};
+
 export interface AppointmentRepository {
   create(input: CreateAppointmentInput): Promise<Appointment>;
 
@@ -16,6 +20,8 @@ export interface AppointmentRepository {
   ): Promise<Appointment | undefined>;
 
   findByUserId(userId: string): Promise<Appointment[]>;
+
+  findWitFilter(filter: FindAppointmentWithFilter): Promise<Appointment[]>;
 
   findByStoreIdAndDate(storeId: string, date: Date): Promise<Appointment[]>;
 }

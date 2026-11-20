@@ -1,11 +1,13 @@
+import { UTCDate } from "@date-fns/utc";
 import type { Appointment } from "@src/domain/models/appointment";
 import type { Store } from "@src/domain/models/store";
 import type {
   AppointmentRepository,
   CreateAppointmentInput,
+  FindAppointmentWithFilter,
 } from "@src/domain/repository/appointment-repository";
 import { endOfDay, startOfDay } from "date-fns";
-import { and, between, eq } from "drizzle-orm";
+import { and, between, eq, getTableColumns } from "drizzle-orm";
 import db from "../connection";
 import { DbError } from "../errors/db-erro";
 import { appointments, stores } from "../schema";
@@ -79,6 +81,33 @@ export class AppointmentRepositoryImpl implements AppointmentRepository {
     return result.map(({ storeId, ...data }) => ({
       ...data,
       store: { id: storeId } as Store,
+    }));
+  }
+
+  async findWitFilter(
+    filter: FindAppointmentWithFilter,
+  ): Promise<Appointment[]> {
+    const date = new UTCDate(filter.date);
+    const result = await db
+      .select({
+        ...getTableColumns(appointments),
+        store: {
+          id: stores.id,
+          name: stores.name,
+        },
+      })
+      .from(appointments)
+      .leftJoin(stores, eq(stores.id, appointments.storeId))
+      .where(
+        and(
+          eq(stores.ownerId, filter.userId),
+          between(appointments.scheduledAt, startOfDay(date), endOfDay(date)),
+          filter.storeId && eq(appointments.storeId, filter.storeId),
+        ),
+      );
+    return result.map(({ store, storeId, ...rest }) => ({
+      ...rest,
+      store: store as Store,
     }));
   }
 }

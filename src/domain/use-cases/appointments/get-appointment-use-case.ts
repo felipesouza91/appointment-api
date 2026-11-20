@@ -2,8 +2,14 @@ import type { Appointment } from "@src/domain/models/appointment";
 import type { AppointmentRepository } from "@src/domain/repository/appointment-repository";
 import type { ContainerInjection } from "@src/infra/cdi/cdi-config";
 
+export type GetAppointmentsUseCaseFilter = {
+  userId: string;
+  storeId?: string;
+  date: Date;
+};
+
 export interface GetAppointmentsUseCase {
-  find: (userId: string) => Promise<Appointment[]>;
+  find: (data: GetAppointmentsUseCaseFilter) => Promise<Appointment[]>;
 }
 
 type GetAppointmentsUseCaseImplProps = {
@@ -17,9 +23,16 @@ export class GetAppointmentsUseCaseImpl implements ContainerInjection {
     this.appointmentRepository = appointmentRepository;
   }
 
-  async find(userId: string): Promise<Appointment[]> {
-    const appointmentsUser =
-      await this.appointmentRepository.findByUserId(userId);
+  async find({
+    date,
+    userId,
+    storeId,
+  }: GetAppointmentsUseCaseFilter): Promise<Appointment[]> {
+    const appointmentsUser = await this.appointmentRepository.findWitFilter({
+      date,
+      userId,
+      storeId,
+    });
     return appointmentsUser;
   }
 
