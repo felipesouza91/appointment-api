@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "bun --watch src/app.ts",
-    "build": "bun build src/app.ts",
+    "build:app": "bun build src/app.ts --minify --target=bun --outdir dist",
+    "build:app:compile": "bun build --compile --minify --sourcemap ./src/app.ts --outfile build/app",
     "start": "NODE_ENV=production bun src/app.ts",
     "test": "bun test",
     "generate": "drizzle-kit generate",
