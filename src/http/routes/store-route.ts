@@ -55,7 +55,6 @@ export async function storeRoute(
       schema: {
         ...getStoreByIdPeriodsOpenApi,
       },
-      preHandler: serverInstance.auth([serverInstance.verifyToken]),
     },
     async (req, replay) => {
       const getStorePeriodById = req.diScope.resolve("getStorePeriodById");

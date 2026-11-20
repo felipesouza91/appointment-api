@@ -1,3 +1,4 @@
+import { UTCDate } from "@date-fns/utc";
 import z from "zod";
 import { createStoreRequest } from "../dto/inputs/store-request";
 import { errorResponse } from "../dto/outputs/error-output";
@@ -38,10 +39,10 @@ export const getStoreByIdPeriodsOpenApi = {
     storeId: z.uuid(),
   }),
   querystring: z.object({
-    date: z.coerce.date(),
+    date: z.coerce.date().optional().default(new UTCDate()),
   }),
-  summary: "Get store periods",
-  description: "Get store periods",
+  summary: "Get store appointments",
+  description: "Get store appointments",
   tags: ["Store"],
   response: {
     200: z.array(storePeriod).describe("Store appointments periods"),
