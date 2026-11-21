@@ -5,21 +5,9 @@ WORKDIR /appointment-api
 COPY package.json ./
 COPY bun.lock ./
 
-RUN bun install
+RUN bun install --omit dev
 
 COPY . .
 
-RUN bun build:app
+CMD ["bun", "start"]
 
-FROM oven/bun:1.4-slim 
-
-WORKDIR /appointment-api
-
-COPY package.json ./
-COPY bun.lock ./
-
-RUN bun install --omit dev
-
-COPY --from=build /appointment-api/build/app.js /appointment-api
-
-ENTRYPOINT [ "bun", "app.js" ]

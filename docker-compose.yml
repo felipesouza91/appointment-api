@@ -22,6 +22,9 @@ services:
       - TOKEN_EXPIRATION_TIME=3600
       - COOKIE_SECRET=cb03da2a08d901a1d250
       - COOKIE_EXPIRATION_TIME=3600
+    pre_start:
+      - image: appointmentapi:latest
+        command: ["bun", "migrate"]
 
 volumes:
   postgres_data:
