@@ -12,5 +12,16 @@ services:
     volumes:
       - postgres_data:/bitnami/postgresql
 
+  app:
+    image: appointmentapi:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://docker:docker@postgres:5432/appointment_api
+      - TOKEN_SECRET=01a1d250-e763-7031-81da-cb03da2a08d901a1d250-fc7c-7824-8511-63067390900f
+      - TOKEN_EXPIRATION_TIME=3600
+      - COOKIE_SECRET=cb03da2a08d901a1d250
+      - COOKIE_EXPIRATION_TIME=3600
+
 volumes:
   postgres_data:
