@@ -1,1 +1,12 @@
 GET http://localhost:3000/appointments HTTP/1.1
+
+###
+
+POST http://localhost:3000/auth/sign-in HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Felipe Souza",
+    "email": "felipe@email.com",
+    "phone": "1234567"
+}

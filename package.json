@@ -5,17 +5,43 @@
   "private": true,
   "scripts": {
     "dev": "bun --watch src/app.ts",
+    "build:app": "bun build src/app.ts --minify --sourcemap --target=node --outdir build ",
+    "build:app:compile": "bun build --compile --minify --sourcemap ./src/app.ts --outfile build/app",
+    "start": "NODE_ENV=production bun src/app.ts",
+    "test": "bun test",
+    "generate": "drizzle-kit generate",
+    "studio": "drizzle-kit studio",
+    "migrate": "bun ./src/infra/db/migrate.ts",
     "typecheck": "bun check"
   },
+  "dependencies": {
+    "@date-fns/utc": "^2.1.1",
+    "@fastify/auth": "^5.1.2",
+    "@fastify/awilix": "^8.3.2",
+    "@fastify/cookie": "^11.1.5",
+    "@fastify/swagger": "^9.9.3",
+    "@fastify/swagger-ui": "^6.1.3",
+    "@fastify/type-provider-zod": "^1.0.3",
+    "awilix": "^13.0.5",
+    "date-fns": "^4.4.0",
+    "drizzle-orm": "^0.45.4",
+    "fastify": "^5.12.8",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.23.1",
+    "zod": "^4.6.7"
+  },
   "devDependencies": {
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
     "@faker-js/faker": "^10.6.0",
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/pg": "^8.23.1",
+    "drizzle-kit": "^0.31.11",
+    "lefthook": "^2.2.2",
+    "tsx": "^4.23.15"
   },
   "peerDependencies": {
     "typescript": "^7"
-  },
-  "dependencies": {
-    "@fastify/auth": "^5.1.2",
-    "fastify": "^5.12.8"
   }
 }
