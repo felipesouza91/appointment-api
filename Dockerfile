@@ -9,5 +9,7 @@ RUN bun install --omit dev
 
 COPY . .
 
+RUN bun migrate
+
 CMD ["bun", "start"]
 
