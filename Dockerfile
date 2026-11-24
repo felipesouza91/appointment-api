@@ -9,5 +9,5 @@ RUN bun install --omit dev
 
 COPY . .
 
-CMD ["bun", "migrate", "&&", "bun", "start"]
+CMD ["/bin/bash", "-c", "bun migrate && bun start"]
 
